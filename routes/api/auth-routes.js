@@ -6,7 +6,7 @@ const {validateBody} = require("../../utils")
 
 const schema = require("../../schema/users")
 
-const {authenticate} = require("../../middlewares")
+const {authenticate, upload} = require("../../middlewares")
 
 const authController = require("../../controllers/auth-controllers")
 
@@ -20,6 +20,8 @@ router.get("/current", authenticate, authController.current)
 
 router.post("/logout", authenticate, authController.logout)
 
-router.patch("/", authenticate,validateBody(schema.subscriptionSchema), authController.subscription)
+router.patch("/", authenticate, validateBody(schema.subscriptionSchema), authController.subscription)
+
+router.patch("/avatars", authenticate, upload.single("avatar"), authController.updateAvatar)
 
 module.exports = router;
